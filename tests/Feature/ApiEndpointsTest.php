@@ -177,10 +177,102 @@ class ApiEndpointsTest extends TestCase
 
     public function test_unsubscribe_newsletter()
     {
+        $this->postJson('/api/newsletter/subscribe', [
+            'email' => 'subscriber@example.com',
+        ]);
+
         $response = $this->postJson('/api/newsletter/unsubscribe', [
             'email' => 'subscriber@example.com',
         ]);
 
-        $response->assertStatus(200 || 404);
+        $response->assertStatus(200);
+    }
+
+    // ✅ Tests Utilisateurs
+    public function test_get_users_list()
+    {
+        User::factory(3)->create();
+
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->token}",
+        ])->getJson('/api/users');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure(['data']);
+    }
+
+    public function test_create_user()
+    {
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->token}",
+        ])->postJson('/api/users', [
+            'name'                  => 'New User',
+            'email'                 => 'newuser@example.com',
+            'password'              => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertStatus(201);
+        $response->assertJsonStructure(['id', 'name', 'email', 'created_at']);
+    }
+
+    public function test_get_user_by_id()
+    {
+        $otherUser = User::factory()->create();
+
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->token}",
+        ])->getJson("/api/users/{$otherUser->id}");
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment(['email' => $otherUser->email]);
+    }
+
+    public function test_update_user()
+    {
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->token}",
+        ])->putJson("/api/users/{$this->user->id}", [
+            'name' => 'Updated Name',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment(['name' => 'Updated Name']);
+    }
+
+    public function test_cannot_update_another_user()
+    {
+        $otherUser = User::factory()->create();
+
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->token}",
+        ])->putJson("/api/users/{$otherUser->id}", [
+            'name' => 'Hacked Name',
+        ]);
+
+        $response->assertStatus(403);
+        $this->assertDatabaseHas('users', ['id' => $otherUser->id, 'name' => $otherUser->name]);
+    }
+
+    public function test_delete_user()
+    {
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->token}",
+        ])->deleteJson("/api/users/{$this->user->id}");
+
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('users', ['id' => $this->user->id]);
+    }
+
+    public function test_cannot_delete_another_user()
+    {
+        $otherUser = User::factory()->create();
+
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$this->token}",
+        ])->deleteJson("/api/users/{$otherUser->id}");
+
+        $response->assertStatus(403);
+        $this->assertDatabaseHas('users', ['id' => $otherUser->id]);
     }
 }

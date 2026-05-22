@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\NewsletterController;
 use App\Http\Controllers\Api\ImageController;
+use App\Http\Controllers\Api\UserController;
 
 // ─── Auth ─────────────────────────────────────────
 Route::post('/register', [AuthController::class, 'register']);
@@ -32,6 +33,13 @@ Route::middleware('auth:sanctum')->group(function () {
     // Images
     Route::post('/articles/{article}/images', [ImageController::class, 'store']);
     Route::delete('/images/{image}',          [ImageController::class, 'destroy']);
+
+    // Utilisateurs
+    Route::get('/users',          [UserController::class, 'index']);
+    Route::post('/users',         [UserController::class, 'store']);
+    Route::get('/users/{user}',   [UserController::class, 'show']);
+    Route::put('/users/{user}',   [UserController::class, 'update']);
+    Route::delete('/users/{user}',[UserController::class, 'destroy']);
 });
 
 // ─── Newsletter (public) ───────────────────────────

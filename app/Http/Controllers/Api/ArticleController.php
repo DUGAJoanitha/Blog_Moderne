@@ -1,49 +1,66 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Article;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Liste tous les articles publiés
     public function index()
     {
-        //
+        $articles = Article::with(['user', 'images'])
+            ->where('status', 'published')
+            ->latest('published_at')
+            ->paginate(10);
+
+        return response()->json($articles);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Créer un article
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title'   => 'required|string|max:255',
+            'content' => 'required',
+            'status'  => 'in:draft,published',
+        ]);
+
+        $article = Article::create([
+            'user_id'      => auth()->id(),
+            'title'        => $request->title,
+            'content'      => $request->content,
+            'status'       => $request->status ?? 'draft',
+            'published_at' => $request->status === 'published' ? now() : null,
+        ]);
+
+        return response()->json($article, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Afficher un article
+    public function show($slug)
     {
-        //
+        $article = Article::with(['user', 'comments.user', 'images'])
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        return response()->json($article);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // Modifier un article
+    public function update(Request $request, Article $article)
     {
-        //
+        $this->authorize('update', $article); // optionnel
+
+        $article->update($request->only(['title', 'content', 'status']));
+        return response()->json($article);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    // Supprimer un article
+    public function destroy(Article $article)
     {
-        //
+        $article->delete();
+        return response()->json(['message' => 'Article supprimé']);
     }
 }

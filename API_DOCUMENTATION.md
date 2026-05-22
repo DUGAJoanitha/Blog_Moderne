@@ -2,7 +2,7 @@
 
 ## 📋 Résumé des Endpoints
 
-**15 endpoints au total** : 3 Auth + 5 Articles + 3 Comments + 2 Images + 2 Newsletter
+**20 endpoints au total** : 3 Auth + 5 Articles + 3 Comments + 2 Images + 5 Users + 2 Newsletter
 
 ### 1. **Authentification** (3 endpoints)
 - `POST /api/register` - Créer un compte
@@ -25,7 +25,14 @@
 - `POST /api/articles/{article}/images` - Uploader une image (protégé)
 - `DELETE /api/images/{image}` - Supprimer une image (protégé)
 
-### 5. **Newsletter** (2 endpoints)
+### 5. **Utilisateurs** (5 endpoints)
+- `GET /api/users` - Lister les utilisateurs (protégé)
+- `POST /api/users` - Créer un utilisateur (protégé)
+- `GET /api/users/{user}` - Voir un utilisateur (protégé)
+- `PUT /api/users/{user}` - Mettre à jour son compte (protégé)
+- `DELETE /api/users/{user}` - Supprimer son compte (protégé)
+
+### 6. **Newsletter** (2 endpoints)
 - `POST /api/newsletter/subscribe` - S'inscrire (public)
 - `POST /api/newsletter/unsubscribe` - Se désinscrire (public)
 
@@ -56,13 +63,17 @@ Configurer les variables essentielles :
 APP_URL=http://localhost:8000
 APP_DEBUG=true
 DB_CONNECTION=sqlite
+DB_DATABASE=database/database.sqlite
 # ou
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=blog
-DB_USERNAME=root
-DB_PASSWORD=
+# DB_CONNECTION=mysql
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=blog
+# DB_USERNAME=root
+# DB_PASSWORD=
+
+# Si vous utilisez Sanctum en mode cookie pour un SPA, configurez :
+# SANCTUM_STATEFUL_DOMAINS=localhost
 ```
 
 ### 3. Générer une clé d'application
@@ -75,7 +86,12 @@ php artisan key:generate
 php artisan migrate
 ```
 
-### 5. Lancer le serveur
+### 5. Créer le lien de stockage public (pour les images)
+```bash
+php artisan storage:link
+```
+
+### 6. Lancer le serveur
 ```bash
 php artisan serve
 ```
@@ -183,6 +199,11 @@ POST /api/newsletter/subscribe
 | DELETE /comments/{comment} | ✅ | - |
 | POST /articles/{article}/images | ✅ | - |
 | DELETE /images/{image} | ✅ | - |
+| GET /api/users | ✅ | - |
+| POST /api/users | ✅ | - |
+| GET /api/users/{user} | ✅ | - |
+| PUT /api/users/{user} | ✅ | - |
+| DELETE /api/users/{user} | ✅ | - |
 | POST /newsletter/subscribe | ✅ | - |
 | POST /newsletter/unsubscribe | ✅ | - |
 
@@ -221,13 +242,13 @@ Newsletter
 - Chaque requête protégée nécessite un Bearer token
 
 ### Autorisation
-- **Policies** : ArticlePolicy, CommentPolicy
+- **Policies** : ArticlePolicy, CommentPolicy, UserPolicy
 - Seuls les auteurs peuvent modifier/supprimer leurs contenus
-- Les articles et commentaires ne peuvent être modifiés que par leur créateur
+- Les articles, commentaires et comptes utilisateur ne peuvent être modifiés que par leur créateur/propriétaire
 
 ### Validation
 - Email unique pour les utilisateurs et newsletter
-- Mot de passe minmum 6 caractères
+- Mot de passe minimum 8 caractères
 - Contenu minimum 3 caractères pour les commentaires
 
 ---

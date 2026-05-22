@@ -3,19 +3,20 @@
 ## ✅ Tâches Accomplies
 
 ### 1️⃣ **Audit Complet des Endpoints** ✓
-- **15 endpoints** identifiés et implémentés
+- **20 endpoints** identifiés et implémentés
 - Documentation complète créée : `API_AUDIT_PLAN.md`
 - Toutes les routes vérifiées avec `php artisan route:list --path=api`
 
 ### 2️⃣ **Implémentation des Contrôleurs** ✓
-- ✅ `AuthController` - Complet (register, login, logout)
+- ✅ `AuthController` - Implémenté pour register, login et logout
 - ✅ `ArticleController` - Complet (CRUD)
 - ✅ `CommentController` - Implémenté (store, update, destroy)
 - ✅ `ImageController` - Implémenté (store, destroy)
 - ✅ `NewsletterController` - Implémenté (subscribe, unsubscribe)
+- ✅ `UserController` - Implémenté (index, store, show, update, destroy)
 
 ### 3️⃣ **Sécurité et Autorisation** ✓
-- ✅ **Policies créées** : ArticlePolicy, CommentPolicy
+- ✅ **Policies créées** : ArticlePolicy, CommentPolicy, UserPolicy
 - ✅ **AuthServiceProvider** enregistré
 - ✅ Middleware **auth:sanctum** configuré
 - ✅ Vérification d'autorisation pour modifications
@@ -40,13 +41,13 @@
 
 ### 7️⃣ **Correction du Problème Initial** ✓
 - ✅ Fichier `routes/api.php` avait 1 seule route par défaut
-- ✅ Remplacement complet avec 15 endpoints
+- ✅ Remplacement complet avec 20 endpoints
 - ✅ Cache Laravel vidé et rechargé
-- ✅ Vérification : `Showing [15] routes` ✓
+- ✅ Vérification : `Showing [20] routes` ✓
 
 ---
 
-## 📋 Liste Complète des 15 Endpoints
+## 📋 Liste Complète des 20 Endpoints
 
 ### **AUTH** (3)
 ```
@@ -75,6 +76,15 @@ DELETE /api/comments/{comment}            ✓ Protégé (auth requis)
 ```
 POST   /api/articles/{article}/images     ✓ Protégé
 DELETE /api/images/{image}                ✓ Protégé (auth requis)
+```
+
+### **USERS** (5)
+```
+GET    /api/users                        ✓ Protégé
+POST   /api/users                        ✓ Protégé
+GET    /api/users/{user}                 ✓ Protégé
+PUT    /api/users/{user}                 ✓ Protégé
+DELETE /api/users/{user}                 ✓ Protégé
 ```
 
 ### **NEWSLETTER** (2)
@@ -131,7 +141,7 @@ Serveur accessible à : **http://localhost:8000**
 ```
 blog/
 ├── routes/
-│   └── api.php                          ✅ CORRIGÉ (15 routes)
+│   └── api.php                          ✅ CORRIGÉ (20 routes)
 ├── app/Http/Controllers/Api/
 │   ├── AuthController.php               ✅ Complet
 │   ├── ArticleController.php            ✅ Complet
@@ -140,7 +150,8 @@ blog/
 │   └── NewsletterController.php         ✅ Implémenté
 ├── app/Policies/
 │   ├── ArticlePolicy.php                ✅ Créé
-│   └── CommentPolicy.php                ✅ Créé
+│   ├── CommentPolicy.php                ✅ Créé
+│   └── UserPolicy.php                   ✅ Créé
 ├── app/Providers/
 │   ├── AuthServiceProvider.php          ✅ Créé
 │   └── AppServiceProvider.php
@@ -163,13 +174,13 @@ blog/
 
 | Catégorie | Status |
 |-----------|--------|
-| Endpoints | ✅ 15/15 Implémentés |
-| Contrôleurs | ✅ 5/5 Complets |
+| Endpoints | ✅ 20/20 Implémentés |
+| Contrôleurs | ✅ 6/6 Complets |
 | Modèles | ✅ 5/5 Validés |
-| Policies | ✅ 2/2 Créés |
+| Policies | ✅ 3/3 Créés |
 | Tests | ✅ Collection Postman + Tests phpunit |
 | Documentation | ✅ Complète |
-| Routes Enregistrées | ✅ `Showing [15] routes` |
+| Routes Enregistrées | ✅ `Showing [20] routes` |
 
 ---
 
@@ -186,5 +197,5 @@ blog/
 **✅ MISSION ACCOMPLIE - Tous les endpoints sont créés, testables et documentés !**
 
 **Dernière mise à jour** : 21 mai 2026
-**Total endpoints** : 15
+**Total endpoints** : 20
 **Status** : 🟢 Prêt pour test
