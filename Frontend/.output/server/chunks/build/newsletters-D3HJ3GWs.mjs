@@ -1,0 +1,189 @@
+import { _ as __nuxt_component_0 } from './nuxt-link-BdXAT07U.mjs';
+import { defineComponent, ref, withCtx, createTextVNode, createVNode, withDirectives, vModelText, withModifiers, openBlock, createBlock, toDisplayString, createCommentVNode, useSSRContext } from 'vue';
+import { ssrRenderComponent, ssrRenderAttr, ssrIncludeBooleanAttr, ssrInterpolate } from 'vue/server-renderer';
+import { u as useApi } from './auth-BAJuOaTf.mjs';
+import { D as DashboardLayout } from './DashboardLayout-cNXRxOuK.mjs';
+import '../_/nitro.mjs';
+import 'node:http';
+import 'node:https';
+import 'node:events';
+import 'node:buffer';
+import 'node:fs';
+import 'node:path';
+import 'node:crypto';
+import 'node:url';
+import './server.mjs';
+import '../routes/renderer.mjs';
+import 'vue-bundle-renderer/runtime';
+import 'unhead/server';
+import 'devalue';
+import 'unhead/utils';
+import 'pinia';
+import 'vue-router';
+import '@vue/shared';
+
+const _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: "newsletters",
+  __ssrInlineRender: true,
+  setup(__props) {
+    const api = useApi();
+    const email = ref("");
+    const message = ref("");
+    const errorMessage = ref("");
+    const isSubmitting = ref(false);
+    const subscribe = async () => {
+      errorMessage.value = "";
+      message.value = "";
+      if (!email.value.trim()) {
+        errorMessage.value = "L’email est requis.";
+        return;
+      }
+      isSubmitting.value = true;
+      try {
+        const response = await api("/newsletter/subscribe", {
+          method: "POST",
+          body: { email: email.value }
+        });
+        message.value = response.message || "Inscription réussie.";
+        email.value = "";
+      } catch (error) {
+        errorMessage.value = error?.data?.message || "Impossible de s’inscrire pour le moment.";
+      } finally {
+        isSubmitting.value = false;
+      }
+    };
+    const unsubscribe = async () => {
+      errorMessage.value = "";
+      message.value = "";
+      if (!email.value.trim()) {
+        errorMessage.value = "L’email est requis.";
+        return;
+      }
+      isSubmitting.value = true;
+      try {
+        const response = await api("/newsletter/unsubscribe", {
+          method: "POST",
+          body: { email: email.value }
+        });
+        message.value = response.message || "Désinscription réussie.";
+        email.value = "";
+      } catch (error) {
+        errorMessage.value = error?.data?.message || "Impossible de se désinscrire pour le moment.";
+      } finally {
+        isSubmitting.value = false;
+      }
+    };
+    return (_ctx, _push, _parent, _attrs) => {
+      const _component_NuxtLink = __nuxt_component_0;
+      _push(ssrRenderComponent(DashboardLayout, _attrs, {
+        default: withCtx((_, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(`<section class="rounded-[2rem] border border-white/5 bg-white/5 p-8 shadow-xl shadow-slate-950/20"${_scopeId}><div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"${_scopeId}><div${_scopeId}><p class="text-sm uppercase tracking-[0.25em] text-slate-400"${_scopeId}>Newsletter</p><h2 class="mt-3 text-3xl font-bold text-white"${_scopeId}>Gestion des abonnés</h2><p class="mt-2 text-sm leading-6 text-slate-400"${_scopeId}>Ajoutez ou retirez une adresse de la liste de newsletter.</p></div>`);
+            _push2(ssrRenderComponent(_component_NuxtLink, {
+              to: "/dashboard",
+              class: "rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10"
+            }, {
+              default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+                if (_push3) {
+                  _push3(`Retour au tableau de bord`);
+                } else {
+                  return [
+                    createTextVNode("Retour au tableau de bord")
+                  ];
+                }
+              }),
+              _: 1
+            }, _parent2, _scopeId));
+            _push2(`</div><div class="mt-8 grid gap-6 lg:grid-cols-[1fr_320px]"${_scopeId}><div class="rounded-[2rem] border border-white/5 bg-slate-950/80 p-8"${_scopeId}><p class="text-sm uppercase tracking-[0.25em] text-slate-400"${_scopeId}>Abonnement</p><p class="mt-3 text-sm leading-6 text-slate-300"${_scopeId}>Envoyez un email pour inscrire une nouvelle adresse.</p><label class="mt-8 block space-y-3"${_scopeId}><span class="text-sm font-semibold text-white"${_scopeId}>Email</span><input${ssrRenderAttr("value", email.value)} type="email" placeholder="email@exemple.com" class="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-5 py-4 text-white outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/10"${_scopeId}></label><div class="mt-6 flex flex-col gap-3 sm:flex-row"${_scopeId}><button${ssrIncludeBooleanAttr(isSubmitting.value) ? " disabled" : ""} class="rounded-3xl bg-emerald-500 px-5 py-4 text-sm font-semibold text-white transition hover:bg-emerald-400 disabled:opacity-50"${_scopeId}>S’inscrire</button><button${ssrIncludeBooleanAttr(isSubmitting.value) ? " disabled" : ""} class="rounded-3xl bg-red-500 px-5 py-4 text-sm font-semibold text-white transition hover:bg-red-400 disabled:opacity-50"${_scopeId}>Se désinscrire</button></div><div class="mt-6 space-y-3"${_scopeId}>`);
+            if (message.value) {
+              _push2(`<p class="rounded-3xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-100"${_scopeId}>${ssrInterpolate(message.value)}</p>`);
+            } else {
+              _push2(`<!---->`);
+            }
+            if (errorMessage.value) {
+              _push2(`<p class="rounded-3xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-100"${_scopeId}>${ssrInterpolate(errorMessage.value)}</p>`);
+            } else {
+              _push2(`<!---->`);
+            }
+            _push2(`</div></div><div class="rounded-[2rem] border border-white/5 bg-slate-950/80 p-8"${_scopeId}><p class="text-sm uppercase tracking-[0.25em] text-slate-400"${_scopeId}>Astuce</p><h3 class="mt-4 text-xl font-semibold text-white"${_scopeId}>Liste de diffusion</h3><p class="mt-3 text-sm leading-6 text-slate-300"${_scopeId}>Le backend gère l’ajout et la suppression d’adresses. Ces pages sont utiles pour préparer vos campagnes marketing.</p></div></div></section>`);
+          } else {
+            return [
+              createVNode("section", { class: "rounded-[2rem] border border-white/5 bg-white/5 p-8 shadow-xl shadow-slate-950/20" }, [
+                createVNode("div", { class: "flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between" }, [
+                  createVNode("div", null, [
+                    createVNode("p", { class: "text-sm uppercase tracking-[0.25em] text-slate-400" }, "Newsletter"),
+                    createVNode("h2", { class: "mt-3 text-3xl font-bold text-white" }, "Gestion des abonnés"),
+                    createVNode("p", { class: "mt-2 text-sm leading-6 text-slate-400" }, "Ajoutez ou retirez une adresse de la liste de newsletter.")
+                  ]),
+                  createVNode(_component_NuxtLink, {
+                    to: "/dashboard",
+                    class: "rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10"
+                  }, {
+                    default: withCtx(() => [
+                      createTextVNode("Retour au tableau de bord")
+                    ]),
+                    _: 1
+                  })
+                ]),
+                createVNode("div", { class: "mt-8 grid gap-6 lg:grid-cols-[1fr_320px]" }, [
+                  createVNode("div", { class: "rounded-[2rem] border border-white/5 bg-slate-950/80 p-8" }, [
+                    createVNode("p", { class: "text-sm uppercase tracking-[0.25em] text-slate-400" }, "Abonnement"),
+                    createVNode("p", { class: "mt-3 text-sm leading-6 text-slate-300" }, "Envoyez un email pour inscrire une nouvelle adresse."),
+                    createVNode("label", { class: "mt-8 block space-y-3" }, [
+                      createVNode("span", { class: "text-sm font-semibold text-white" }, "Email"),
+                      withDirectives(createVNode("input", {
+                        "onUpdate:modelValue": ($event) => email.value = $event,
+                        type: "email",
+                        placeholder: "email@exemple.com",
+                        class: "w-full rounded-3xl border border-white/10 bg-slate-950/80 px-5 py-4 text-white outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/10"
+                      }, null, 8, ["onUpdate:modelValue"]), [
+                        [vModelText, email.value]
+                      ])
+                    ]),
+                    createVNode("div", { class: "mt-6 flex flex-col gap-3 sm:flex-row" }, [
+                      createVNode("button", {
+                        onClick: withModifiers(subscribe, ["prevent"]),
+                        disabled: isSubmitting.value,
+                        class: "rounded-3xl bg-emerald-500 px-5 py-4 text-sm font-semibold text-white transition hover:bg-emerald-400 disabled:opacity-50"
+                      }, "S’inscrire", 8, ["disabled"]),
+                      createVNode("button", {
+                        onClick: withModifiers(unsubscribe, ["prevent"]),
+                        disabled: isSubmitting.value,
+                        class: "rounded-3xl bg-red-500 px-5 py-4 text-sm font-semibold text-white transition hover:bg-red-400 disabled:opacity-50"
+                      }, "Se désinscrire", 8, ["disabled"])
+                    ]),
+                    createVNode("div", { class: "mt-6 space-y-3" }, [
+                      message.value ? (openBlock(), createBlock("p", {
+                        key: 0,
+                        class: "rounded-3xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-100"
+                      }, toDisplayString(message.value), 1)) : createCommentVNode("", true),
+                      errorMessage.value ? (openBlock(), createBlock("p", {
+                        key: 1,
+                        class: "rounded-3xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-100"
+                      }, toDisplayString(errorMessage.value), 1)) : createCommentVNode("", true)
+                    ])
+                  ]),
+                  createVNode("div", { class: "rounded-[2rem] border border-white/5 bg-slate-950/80 p-8" }, [
+                    createVNode("p", { class: "text-sm uppercase tracking-[0.25em] text-slate-400" }, "Astuce"),
+                    createVNode("h3", { class: "mt-4 text-xl font-semibold text-white" }, "Liste de diffusion"),
+                    createVNode("p", { class: "mt-3 text-sm leading-6 text-slate-300" }, "Le backend gère l’ajout et la suppression d’adresses. Ces pages sont utiles pour préparer vos campagnes marketing.")
+                  ])
+                ])
+              ])
+            ];
+          }
+        }),
+        _: 1
+      }, _parent));
+    };
+  }
+});
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/dashboard/newsletters.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+
+export { _sfc_main as default };
+//# sourceMappingURL=newsletters-D3HJ3GWs.mjs.map
