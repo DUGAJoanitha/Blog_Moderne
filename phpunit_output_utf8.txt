@@ -1,0 +1,26 @@
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿
+  [30;42;1m PASS [39;49;22m[39m Tests\Feature\ApiEndpointsTest[39m
+  [32;1m✓[39;22m[90m [39m[90mregister endpoint[39m[90m                                    [39m [90m0.41s[39m  
+  [32;1m✓[39;22m[90m [39m[90mlogin endpoint[39m[90m                                       [39m [90m0.02s[39m  
+  [32;1m✓[39;22m[90m [39m[90mlogout endpoint[39m[90m                                      [39m [90m0.03s[39m  
+  [32;1m✓[39;22m[90m [39m[90mget articles list[39m[90m                                    [39m [90m0.03s[39m  
+  [32;1m✓[39;22m[90m [39m[90mcreate article[39m[90m                                       [39m [90m0.02s[39m  
+  [32;1m✓[39;22m[90m [39m[90mget article by slug[39m[90m                                  [39m [90m0.02s[39m  
+  [32;1m✓[39;22m[90m [39m[90mupdate article[39m[90m                                       [39m [90m0.03s[39m  
+  [32;1m✓[39;22m[90m [39m[90mdelete article[39m[90m                                       [39m [90m0.02s[39m  
+  [32;1m✓[39;22m[90m [39m[90mcreate comment[39m[90m                                       [39m [90m0.02s[39m  
+  [32;1m✓[39;22m[90m [39m[90mupdate comment[39m[90m                                       [39m [90m0.02s[39m  
+  [32;1m✓[39;22m[90m [39m[90mdelete comment[39m[90m                                       [39m [90m0.02s[39m  
+  [32;1m✓[39;22m[90m [39m[90msubscribe newsletter[39m[90m                                 [39m [90m0.03s[39m  
+  [32;1m✓[39;22m[90m [39m[90munsubscribe newsletter[39m[90m                               [39m [90m0.03s[39m  
+  [32;1m✓[39;22m[90m [39m[90mget users list[39m[90m                                       [39m [90m0.03s[39m  
+  [32;1m✓[39;22m[90m [39m[90mcreate user[39m[90m                                          [39m [90m0.02s[39m  
+  [32;1m✓[39;22m[90m [39m[90mget user by id[39m[90m                                       [39m [90m0.06s[39m  
+  [32;1m✓[39;22m[90m [39m[90mupdate user[39m[90m                                          [39m [90m0.02s[39m  
+  [32;1m✓[39;22m[90m [39m[90mcannot update another user[39m[90m                           [39m [90m0.02s[39m  
+  [32;1m✓[39;22m[90m [39m[90mdelete user[39m[90m                                          [39m [90m0.02s[39m  
+  [32;1m✓[39;22m[90m [39m[90mcannot delete another user[39m[90m                           [39m [90m0.02s[39m  
+
+  [90mTests:[39m    [32;1m20 passed[39;22m[90m (34 assertions)[39m
+  [90mDuration:[39m [39m1.27s[39m
+
