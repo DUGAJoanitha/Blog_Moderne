@@ -14,6 +14,7 @@ export default defineNuxtConfig({
   srcDir: '.',
 
   app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
     head: {
       title: 'Travel - Explore Horizons',
       meta: [

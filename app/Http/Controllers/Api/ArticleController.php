@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
-    // Liste tous les articles publiés
     public function index()
     {
         $articles = Article::with(['user', 'images'])
@@ -18,7 +17,30 @@ class ArticleController extends Controller
         return response()->json($articles);
     }
 
-    // Créer un article
+    public function adminIndex()
+    {
+        $articles = Article::with(['user', 'images'])
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->get();
+
+        return response()->json($articles);
+    }
+
+    public function adminShow($id)
+    {
+        $article = Article::with(['user', 'images', 'comments.user'])
+            ->where('user_id', auth()->id())
+            ->findOrFail($id);
+
+        $article->images->transform(function ($image) {
+            $image->url = \Storage::disk('public')->url($image->path);
+            return $image;
+        });
+
+        return response()->json($article);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -38,7 +60,6 @@ class ArticleController extends Controller
         return response()->json($article, 201);
     }
 
-    // Afficher un article
     public function show($slug)
     {
         $article = Article::with(['user', 'comments.user', 'images'])
@@ -48,16 +69,14 @@ class ArticleController extends Controller
         return response()->json($article);
     }
 
-    // Modifier un article
     public function update(Request $request, Article $article)
     {
-        $this->authorize('update', $article); // optionnel
+        $this->authorize('update', $article);
 
         $article->update($request->only(['title', 'content', 'status']));
         return response()->json($article);
     }
 
-    // Supprimer un article
     public function destroy(Article $article)
     {
         $article->delete();

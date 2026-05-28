@@ -7,7 +7,18 @@ export const useApi = () => {
   const apiFetch = $fetch.create({
     baseURL: config.public.apiBase,
     onRequest({ options }) {
-      const headers = (options.headers || {}) as Record<string, string>
+      // Construire les headers de façon compatible avec ofetch (Headers | Record)
+      const existing = options.headers
+      const headers: Record<string, string> = {}
+
+      if (existing instanceof Headers) {
+        existing.forEach((value, key) => { headers[key] = value })
+      } else if (Array.isArray(existing)) {
+        existing.forEach(([key, value]) => { headers[key] = value })
+      } else if (existing) {
+        Object.assign(headers, existing)
+      }
+
       headers['Accept'] = 'application/json'
 
       if (authStore.token) {
@@ -18,12 +29,11 @@ export const useApi = () => {
     },
     onResponseError({ response }) {
       if (response.status === 401) {
-        // Clean up store state if token is expired/unauthorized
         authStore.token = null
         authStore.user = null
         navigateTo('/login')
       }
-    }
+    },
   })
 
   return apiFetch

@@ -9,7 +9,26 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    // Créer un commentaire sur un article
+    public function index()
+    {
+        $comments = Comment::with(['user:id,name,email', 'article:id,title,slug'])
+            ->whereHas('article', fn($q) => $q->where('user_id', auth()->id()))
+            ->latest()
+            ->get();
+
+        return response()->json($comments);
+    }
+
+    public function byArticle(Article $article)
+    {
+        $comments = Comment::with('user:id,name,email')
+            ->where('article_id', $article->id)
+            ->latest()
+            ->get();
+
+        return response()->json($comments);
+    }
+
     public function store(Request $request, Article $article)
     {
         $request->validate([
@@ -25,10 +44,9 @@ class CommentController extends Controller
         return response()->json($comment->load('user'), 201);
     }
 
-    // Modifier un commentaire
     public function update(Request $request, Comment $comment)
     {
-        $this->authorize('update', $comment); // Vérifier que c'est l'auteur
+        $this->authorize('update', $comment);
 
         $request->validate([
             'content' => 'required|string|min:3',
@@ -38,10 +56,9 @@ class CommentController extends Controller
         return response()->json($comment);
     }
 
-    // Supprimer un commentaire
     public function destroy(Comment $comment)
     {
-        $this->authorize('destroy', $comment); // Vérifier que c'est l'auteur
+        $this->authorize('destroy', $comment);
 
         $comment->delete();
         return response()->json(['message' => 'Commentaire supprimé']);
